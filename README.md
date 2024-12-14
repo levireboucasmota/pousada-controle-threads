@@ -1,2 +1,2 @@
-# pousada-controle-threads
-Trabalho feito para a cadeira de Sistemas Operacionais utilizando Threads e Semáforos.
+# Problema da Televisão 
+Em uma pousada há apenas uma televisão que pega N canais. Os hóspedes apenas descansam ou então assistem televisão, mas cada hóspede tem um canal preferido e só assiste televisão nesse canal. O hóspede que tiver o controle remoto pode escolher o canal de sua preferência, e então todos os outros hóspedes que gostam desse mesmo canal e quiserem assistir televisão, podem assistir juntos. Os que preferem outros canais ficam dormindo (bloqueado). Apenas quando o último hóspede que está assistindo televisão em determinado canal sai e vai descansar, é que o controle remoto fica livre, e algum hóspede pode escolher outro canal. Utilizando semáforos, modele os threads “hóspedes".
