@@ -1,17 +1,15 @@
 package pousada;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 class Pousada {
     private final Semaphore controleRemoto;
-    private final Lock lock;
+    private Semaphore mutex;
     private int canalAtual;
     private int espectadoresAtuais;
 
     public Pousada(int nCanais) {
         this.controleRemoto = new Semaphore(1, true);
-        this.lock = new ReentrantLock();
+        this.mutex = new Semaphore(1, true);
         this.canalAtual = -1;
         this.espectadoresAtuais = 0;
     }
@@ -19,7 +17,7 @@ class Pousada {
     public void assistirTv(int canal, String id) throws InterruptedException {
         while (true) {
             controleRemoto.acquire();
-            lock.lock();
+            mutex.acquire();
             try {
                 if (canalAtual == -1 || canalAtual == canal) {
                     canalAtual = canal;
@@ -28,15 +26,15 @@ class Pousada {
                     break;
                 }
             } finally {
-                lock.unlock();
+                mutex.release();
                 controleRemoto.release();
             }
             Thread.sleep(1000); // Espera um pouco antes de tentar novamente
         }
     }
 
-    public void liberarTv(int canal, String id) {
-        lock.lock();
+    public void liberarTv(int canal, String id) throws InterruptedException {
+        mutex.acquire();
         try {
             espectadoresAtuais--;
             System.out.println(id + " liberou o canal " + canal);
@@ -45,7 +43,7 @@ class Pousada {
                 controleRemoto.release();
             }
         } finally {
-            lock.unlock();
+            mutex.release();
         }
     }
 }
