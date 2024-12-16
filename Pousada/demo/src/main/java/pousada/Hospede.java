@@ -1,4 +1,5 @@
 package pousada;
+
 class Hospede extends Thread {
     private final Pousada pousada;
     private final String id;
@@ -20,12 +21,17 @@ class Hospede extends Thread {
             while (true) {
                 pousada.assistirTv(canalFavorito, id);
                 System.out.println(id + " está processando enquanto assiste ao canal " + canalFavorito);
-                Thread.sleep(ttv * 1000); // Assiste por ttv segundos
+                Utils.timeCpuBound(ttv, () -> {
+                    System.out.println(id + " continua assistindo ao canal " + canalFavorito);
+                });
+
                 pousada.liberarTv(canalFavorito, id);
                 System.out.println(id + " está processando enquanto descansa");
-                Thread.sleep(td * 1000); // Descansa por td segundos
+                Utils.timeCpuBound(td, () -> {
+                    System.out.println(id + " continua descansando");
+                });
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             Thread.currentThread().interrupt();
         }
     }
