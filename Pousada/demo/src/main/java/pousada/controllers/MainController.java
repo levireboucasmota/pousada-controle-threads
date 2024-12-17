@@ -165,7 +165,7 @@ public class MainController {
                 return;
             }
 
-            String canalSelecionado = canalComboBox.getValue();
+            String canalSelecionado = canalField.getValue();
             String[] partes = canalSelecionado.split("- ");
             int canal = Integer.parseInt(partes[1].trim());
             if (canal == null || canal < 1 || canal > pousada.getNCanais()) {
