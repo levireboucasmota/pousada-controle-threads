@@ -34,6 +34,7 @@ public class Hospede extends Thread {
                 Utils.timeCpuBound(td, () -> {
                     controller.updateGuestStatus(id, "descansando");
                 });
+                controller.updateGuestStatus(id, "está na fila");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

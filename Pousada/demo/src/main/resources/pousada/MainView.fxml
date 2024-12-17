@@ -38,7 +38,7 @@
 
     <!-- Parte Inferior: Log e Lista de Hóspedes -->
     <bottom>
-        <VBox spacing="10" style="-fx-padding: 10;">
+        <VBox spacing="10" style="-fx-padding: 20 10 10 10;">
             <TextArea fx:id="logArea" prefRowCount="8" editable="false" wrapText="true" />
             <Label text="Hóspedes:" style="-fx-font-weight: bold;" />
             <ListView fx:id="hospedesList" prefHeight="100" />

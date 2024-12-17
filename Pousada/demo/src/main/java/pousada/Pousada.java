@@ -1,8 +1,6 @@
 package pousada;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import javafx.application.Platform;
 import pousada.controllers.MainController;
@@ -36,7 +34,6 @@ public class Pousada {
                 if (canalAtual == -1 || canalAtual == canal) {
                     canalAtual = canal;
                     Platform.runLater(() -> {
-
                         mainController.updateImage(canalAtual);
                     });
                     espectadoresAtuais++;
@@ -47,7 +44,6 @@ public class Pousada {
                 mutex.release();
                 controleRemoto.release();
             }
-            Thread.sleep(100); // Espera um pouco antes de tentar novamente
         }
     }
 
@@ -58,6 +54,9 @@ public class Pousada {
             System.out.println(id + " liberou o canal " + canal);
             if (espectadoresAtuais == 0) {
                 canalAtual = -1;
+                Platform.runLater(() -> {
+                    mainController.clearImage();
+                });
                 controleRemoto.release();
             }
         } finally {
