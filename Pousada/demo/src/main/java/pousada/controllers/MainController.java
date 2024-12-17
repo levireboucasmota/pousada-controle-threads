@@ -8,10 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import pousada.Hospede;
 import pousada.Pousada;
 
 public class MainController {
+    @FXML
+    private HBox televisionContent;
+
     @FXML
     private TextField idField;
     @FXML
@@ -20,18 +26,19 @@ public class MainController {
     private TextField ttvField;
     @FXML
     private TextField tdField;
+
     @FXML
     private ListView<String> hospedesList;
     @FXML
     private TextArea logArea;
-    @FXML 
+    @FXML
     private Label currentChannelLabel;
 
     private Pousada pousada;
     private final ObservableList<String> hospedeStatusList = FXCollections.observableArrayList();
 
     public void initialize() {
-        pousada = new Pousada(5); // Número de canais ajustável
+        pousada = new Pousada(5, this);
         hospedesList.setItems(hospedeStatusList);
     }
 
@@ -51,6 +58,21 @@ public class MainController {
             }
             hospedeStatusList.add("Hóspede: " + id + " - " + status);
         });
+
+    }
+
+    public void updateImage(int channel) {
+        String imagePath = "/assets/" + channel + ".jpg";
+        System.out.println("imagePath: " + imagePath);
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(360);
+        imageView.setFitHeight(210);
+        televisionContent.getChildren().clear();
+
+        televisionContent.getChildren().add(imageView);
+
     }
 
     @FXML

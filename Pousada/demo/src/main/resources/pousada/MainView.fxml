@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
     fx:controller="pousada.controllers.MainController">
@@ -17,10 +19,21 @@
     </top>
 
     <center>
-        <ListView fx:id="hospedesList" />
+        <Pane>
+        <!-- Corpo da televisão -->
+        <Rectangle x="50" y="50" width="400" height="250" fill="DARKGRAY" arcWidth="20" arcHeight="20" />
+
+        <!-- Tela da televisão -->
+        <Rectangle x="70" y="70" width="360" height="210" fill="BLACK" />
+        <HBox fx:id="televisionContent" spacing="10" alignment="CENTER" layoutX="70" layoutY="70" prefWidth="360" prefHeight="210"
+          >
+        </HBox>
+    </Pane>
     </center>
 
     <bottom>
         <TextArea fx:id="logArea" prefRowCount="10" editable="false" />
+    
+        <ListView fx:id="hospedesList"></ListView>
     </bottom>
 </BorderPane>
