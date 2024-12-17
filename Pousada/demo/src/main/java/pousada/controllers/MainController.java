@@ -187,7 +187,7 @@ public class MainController {
             logArea.appendText("Hóspede " + id + " foi adicionado.\n");
 
             idField.clear();
-            canalField.clear();
+            canalField.setValue(null);
             ttvField.clear();
             tdField.clear();
         } catch (NumberFormatException e) {
