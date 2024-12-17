@@ -36,7 +36,7 @@ public class MainController {
     @FXML
     private TextField idField;
     @FXML
-    private ComboBox canalField;
+    private ComboBox<String> canalField;
     @FXML
     private TextField ttvField;
     @FXML
@@ -54,11 +54,19 @@ public class MainController {
 
     private Pousada pousada;
     private final ObservableList<String> hospedeStatusList = FXCollections.observableArrayList();
+    private ObservableList<String> canais = FXCollections.observableArrayList(
+        "TV Leão - 1",
+        "Globo - 2",
+        "Record - 3",
+        "RedeTV - 4",
+        "SBT - 5"
+    );
     private final List<HospedeStatus> hospedes = new ArrayList<>();
 
     public void initialize() {
         pousada = new Pousada(5, this);
         hospedesList.setItems(hospedeStatusList);
+        canalField.setItems(canais);
     }
 
     public void updateCurrentChannel(int canal) {
@@ -165,10 +173,10 @@ public class MainController {
                 return;
             }
 
-            String canalSelecionado = canalField.getValue();
+            String canalSelecionado = (String) canalField.getValue();
             String[] partes = canalSelecionado.split("- ");
             int canal = Integer.parseInt(partes[1].trim());
-            if (canal == null || canal < 1 || canal > pousada.getNCanais()) {
+            if (canal < 1 || canal > pousada.getNCanais()) {
                 logArea.appendText("Erro: Canal deve ser entre 1 e " + pousada.getNCanais() + ".\n");
                 return;
             }

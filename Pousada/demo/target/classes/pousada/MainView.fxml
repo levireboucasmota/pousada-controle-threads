@@ -10,17 +10,7 @@
     <top>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <TextField fx:id="idField" promptText="ID" />
-            <ComboBox fx:id="canalField" promptText="Selecione o canal">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="TV Leão - 1" />
-                        <String fx:value="Globo - 2" />
-                        <String fx:value="Record - 3" />
-                        <String fx:value="RedeTV - 4" />
-                        <String fx:value="SBT - 5" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <ComboBox fx:id="canalField" promptText="Selecione o canal" />
             <TextField fx:id="ttvField" promptText="Tempo assistindo" />
             <TextField fx:id="tdField" promptText="Tempo descansando" />
             <Button text="Adicionar Hóspede" onAction="#handleAdicionarHospede" />
