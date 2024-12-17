@@ -25,7 +25,9 @@ import pousada.Hospede;
 import pousada.Pousada;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -62,6 +64,7 @@ public class MainController {
         "SBT - 5"
     );
     private final List<HospedeStatus> hospedes = new ArrayList<>();
+    private final Map<String, String> lastStatus = new HashMap<>();
 
     public void initialize() {
         pousada = new Pousada(5, this);
@@ -87,8 +90,13 @@ public class MainController {
             } else {
                 hospedes.add(new HospedeStatus(id, status));
             }
+
+            if (!status.equals(lastStatus.get(id))) {
+                lastStatus.put(id, status);
+                logArea.appendText("Hóspede " + id + ": " + status + "\n");
+            }
+
             atualizarBonecos();
-            logArea.appendText("Hóspede " + id + ": " + status + "\n");
         });
     }
 
@@ -127,7 +135,7 @@ public class MainController {
     
         // Define cor com base no status
         if (status.contains("assistindo")) {
-            head.setFill(Color.BLUE); // Azul para assistindo
+            head.setFill(Color.GREEN); // Azul para assistindo
         } else if (status.contains("descansando")) {
             head.setFill(Color.RED); // Vermelho para descansando
     
@@ -142,7 +150,7 @@ public class MainController {
     
             pane.getChildren().add(zText);
         } else {
-            head.setFill(Color.GRAY); // Cor padrão para outros status
+            head.setFill(Color.BLUE); // Cor padrão para outros status
         }
     
         // Adiciona os componentes ao pane
@@ -164,6 +172,12 @@ public class MainController {
         });
     }
 
+    public void clearImage() {
+        Platform.runLater(() -> {
+            televisionContent.getChildren().clear();
+        });
+    }
+
     @FXML
     public void handleAdicionarHospede() {
         try {
@@ -173,7 +187,16 @@ public class MainController {
                 return;
             }
 
+            if(hospedeExiste(id)) {
+                logArea.appendText("Erro: Já exite um hóspede com esse ID.\n");
+                return;
+            }
+
             String canalSelecionado = (String) canalField.getValue();
+            if (canalSelecionado == null) {
+                logArea.appendText("Erro: Escolha um canal.\n");
+                return;
+            }
             String[] partes = canalSelecionado.split("- ");
             int canal = Integer.parseInt(partes[1].trim());
             if (canal < 1 || canal > pousada.getNCanais()) {
@@ -191,8 +214,15 @@ public class MainController {
             Hospede hospede = new Hospede(pousada, id, canal, ttv, td, this);
             hospede.start();
 
-            hospedesList.getItems().add("Hóspede: " + id + ", Canal: " + canal);
-            logArea.appendText("Hóspede " + id + " foi adicionado.\n");
+            hospedesList.getItems().add("Hóspede: " + id + ", Canal: " + canal + ", Tempo assistindo TV: "+ ttv + ",Tempo descansando: "+ td);
+            
+            String textLog = "Hóspede " + id + " foi adicionado. Tempo assistindo\n"; 
+            String text = logArea.getText();  
+            String[] lines = text.split("\n"); 
+            if (lines.length == 0 || !lines[lines.length - 1].equals(textLog)) {
+                logArea.appendText(textLog);  
+            }
+
 
             idField.clear();
             canalField.setValue(null);
@@ -202,6 +232,15 @@ public class MainController {
             logArea.appendText("Erro: Campos numéricos inválidos.\n");
         }
     }
+
+    private boolean hospedeExiste(String id) {
+    for (String item : hospedesList.getItems()) {
+        if (item.contains("Hóspede: " + id)) {
+            return true; 
+        }
+    }
+    return false; 
+}
 
     private static class HospedeStatus {
         private final String id;

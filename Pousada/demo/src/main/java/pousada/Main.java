@@ -30,8 +30,8 @@ public class Main extends Application {
         primaryStage.setTitle("Problema da televisão");
 
         // Set the size of the window (width and height)
-        primaryStage.setWidth(1000);
-        primaryStage.setHeight(700);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
 
         // Disable resizing of the window
         primaryStage.setResizable(false);
