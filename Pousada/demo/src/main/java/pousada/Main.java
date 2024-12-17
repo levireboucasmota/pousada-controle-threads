@@ -38,24 +38,6 @@ public class Main extends Application {
 
         // Display the primary stage (the main application window)
         primaryStage.show();
-
-        // Initialize the number of channels for the Pousada
-        int nCanais = 5;
-
-        // Create a new instance of Pousada with the specified number of channels
-        Pousada pousada = new Pousada(nCanais);
-
-        // Create instances of Hospede (Guest), each with different room assignments
-        Hospede h1 = new Hospede(pousada, "Hospede1", 1, 5, 2, controller);
-        Hospede h2 = new Hospede(pousada, "Hospede2", 2, 4, 3, controller);
-        Hospede h3 = new Hospede(pousada, "Hospede3", 1, 6, 1, controller);
-        Hospede h4 = new Hospede(pousada, "Hospede4", 3, 5, 2, controller);
-
-        // Start the guests in their respective threads
-        h1.start();
-        h2.start();
-        h3.start();
-        h4.start();
     }
 
     public static void main(String[] args) {
