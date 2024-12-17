@@ -23,18 +23,14 @@ public class Hospede extends Thread {
     public void run() {
         try {
             while (true) {
+                controller.updateGuestStatus(id, "está na fila");
                 pousada.assistirTv(canalFavorito, id);
                 controller.updateGuestStatus(id, "assistindo TV no canal " + canalFavorito);
-                Utils.timeCpuBound(ttv, () -> {
-                    controller.updateGuestStatus(id, "assistindo TV no canal " + canalFavorito);
-                });
+                Utils.timeCpuBound(ttv);
 
                 pousada.liberarTv(canalFavorito, id);
                 controller.updateGuestStatus(id, "descansando");
-                Utils.timeCpuBound(td, () -> {
-                    controller.updateGuestStatus(id, "descansando");
-                });
-                controller.updateGuestStatus(id, "está na fila");
+                Utils.timeCpuBound(td);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

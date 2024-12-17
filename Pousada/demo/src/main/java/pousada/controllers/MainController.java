@@ -1,16 +1,23 @@
 package pousada.controllers;
 
-import javafx.scene.text.Text;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -21,14 +28,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 import pousada.Hospede;
 import pousada.Pousada;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 
 public class MainController {
@@ -135,9 +138,9 @@ public class MainController {
     
         // Define cor com base no status
         if (status.contains("assistindo")) {
-            head.setFill(Color.GREEN); // Azul para assistindo
+            criarEfeitoPiscar(head, Color.GREEN, Color.GRAY);
         } else if (status.contains("descansando")) {
-            head.setFill(Color.RED); // Vermelho para descansando
+            criarEfeitoPiscar(head, Color.RED, Color.GRAY);
     
             // Adiciona balão de fala com "zzzz"
             Text zText = new Text("zzzz");
@@ -150,7 +153,7 @@ public class MainController {
     
             pane.getChildren().add(zText);
         } else {
-            head.setFill(Color.BLUE); // Cor padrão para outros status
+            head.setFill(Color.YELLOW); // Cor padrão para outros status
         }
     
         // Adiciona os componentes ao pane
@@ -158,6 +161,15 @@ public class MainController {
         pane.setPrefSize(40, 80);
     
         return pane;
+    }
+
+    private static void criarEfeitoPiscar(Circle head, Color cor1, Color cor2) {
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.seconds(0.5), e -> head.setFill(cor1)), // Primeiro estado (cor1)
+            new KeyFrame(Duration.seconds(1), e -> head.setFill(cor2))    // Segundo estado (cor2)
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play(); // Inicia a animação
     }
 
     public void updateImage(int canalAtual) {

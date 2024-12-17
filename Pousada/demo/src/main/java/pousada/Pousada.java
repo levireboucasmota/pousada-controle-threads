@@ -8,6 +8,7 @@ import pousada.controllers.MainController;
 public class Pousada {
     private final Semaphore controleRemoto;
     private final Semaphore mutex;
+    private final Semaphore espera;
     private int canalAtual;
     private int espectadoresAtuais;
     private final int nCanais;
@@ -17,6 +18,7 @@ public class Pousada {
         this.nCanais = nCanais;
         this.controleRemoto = new Semaphore(1, true);
         this.mutex = new Semaphore(1, true);
+        this.espera = new Semaphore(0, true); 
         this.canalAtual = -1;
         this.espectadoresAtuais = 0;
         this.mainController = mainController;
@@ -27,8 +29,8 @@ public class Pousada {
     }
 
     public void assistirTv(int canal, String id) throws InterruptedException {
+        controleRemoto.acquire();
         while (true) {
-            controleRemoto.acquire();
             mutex.acquire();
             try {
                 if (canalAtual == -1 || canalAtual == canal) {
@@ -41,10 +43,11 @@ public class Pousada {
                     break;
                 }
             } finally {
-                mutex.release();
-                controleRemoto.release();
+                mutex.release(); 
             }
+            espera.acquire();
         }
+        controleRemoto.release();
     }
 
     public void liberarTv(int canal, String id) throws InterruptedException {
@@ -57,7 +60,7 @@ public class Pousada {
                 Platform.runLater(() -> {
                     mainController.clearImage();
                 });
-                controleRemoto.release();
+            espera.release();
             }
         } finally {
             mutex.release();

@@ -2,7 +2,7 @@ package pousada;
 
 public class Utils {
 
-    public static void timeCpuBound(double time, Runnable callback) {
+    public static void timeCpuBound(double time) {
         int remainingTime = (int) time;
 
         long startTime = System.currentTimeMillis();
@@ -13,8 +13,7 @@ public class Utils {
 
             if (elapsedTime >= (time - remainingTime + 1)) {
 
-                callback.run();
-
+   
                 remainingTime--;
             }
         }
