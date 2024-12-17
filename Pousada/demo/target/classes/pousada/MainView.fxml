@@ -3,37 +3,45 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 
-
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-    fx:controller="pousada.controllers.MainController">
+            fx:controller="pousada.controllers.MainController">
 
-    <!-- Exemplo de elementos -->
+    <!-- Parte Superior: Adicionar Hóspedes -->
     <top>
-        <HBox spacing="10">
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <TextField fx:id="idField" promptText="ID" />
-            <TextField fx:id="canalField" promptText="Canal" />
-            <TextField fx:id="ttvField" promptText="TTV" />
-            <TextField fx:id="tdField" promptText="TD" />
+            <TextField fx:id="canalField" promptText="Selecione o canal" />
+            <TextField fx:id="ttvField" promptText="Tempo assistindo" />
+            <TextField fx:id="tdField" promptText="Tempo descansando" />
             <Button text="Adicionar Hóspede" onAction="#handleAdicionarHospede" />
         </HBox>
     </top>
 
+    <!-- Parte Central: TV e Bonecos -->
     <center>
-        <Pane>
-        <!-- Corpo da televisão -->
-        <Rectangle x="50" y="50" width="400" height="250" fill="DARKGRAY" arcWidth="20" arcHeight="20" />
+        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20;">
+            <!-- Contêiner dos Bonecos -->
+            <VBox fx:id="bonecosContainer" spacing="15" alignment="TOP_CENTER" prefWidth="100" />
 
-        <!-- Tela da televisão -->
-        <Rectangle x="70" y="70" width="360" height="210" fill="BLACK" />
-        <HBox fx:id="televisionContent" spacing="10" alignment="CENTER" layoutX="70" layoutY="70" prefWidth="360" prefHeight="210"
-          >
+            <!-- Contêiner da TV -->
+            <Pane>
+                <!-- Corpo da televisão -->
+                <Rectangle x="50" y="50" width="400" height="250" fill="DARKGRAY" arcWidth="20" arcHeight="20" />
+
+                <!-- Tela da televisão -->
+                <Rectangle x="70" y="70" width="360" height="210" fill="BLACK" />
+                <HBox fx:id="televisionContent" spacing="10" alignment="CENTER" layoutX="70" layoutY="70"
+                      prefWidth="360" prefHeight="210" />
+            </Pane>
         </HBox>
-    </Pane>
     </center>
 
+    <!-- Parte Inferior: Log e Lista de Hóspedes -->
     <bottom>
-        <TextArea fx:id="logArea" prefRowCount="10" editable="false" />
-    
-        <ListView fx:id="hospedesList"></ListView>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <TextArea fx:id="logArea" prefRowCount="8" editable="false" wrapText="true" />
+            <Label text="Hóspedes:" style="-fx-font-weight: bold;" />
+            <ListView fx:id="hospedesList" prefHeight="100" />
+        </VBox>
     </bottom>
 </BorderPane>
