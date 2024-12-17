@@ -35,7 +35,7 @@ public class MainController {
     @FXML
     private TextField idField;
     @FXML
-    private TextField canalField;
+    private ComboBox canalField;
     @FXML
     private TextField ttvField;
     @FXML
@@ -163,11 +163,15 @@ public class MainController {
                 logArea.appendText("Erro: O ID não pode estar vazio.\n");
                 return;
             }
-            int canal = Integer.parseInt(canalField.getText());
-            if (canal < 1 || canal > pousada.getNCanais()) {
+
+            String canalSelecionado = canalComboBox.getValue();
+            String[] partes = canalSelecionado.split("- ");
+            int canal = Integer.parseInt(partes[1].trim());
+            if (canal == null || canal < 1 || canal > pousada.getNCanais()) {
                 logArea.appendText("Erro: Canal deve ser entre 1 e " + pousada.getNCanais() + ".\n");
                 return;
             }
+
             int ttv = Integer.parseInt(ttvField.getText());
             int td = Integer.parseInt(tdField.getText());
             if (ttv <= 0 || td <= 0) {
