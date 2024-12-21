@@ -11,6 +11,7 @@ public class Pousada {
     private final Semaphore espera;
     private int canalAtual;
     private int espectadoresAtuais;
+    private int espectadoresEsperando;
     private final int nCanais;
     private MainController mainController;
 
@@ -21,6 +22,7 @@ public class Pousada {
         this.espera = new Semaphore(0, true); 
         this.canalAtual = -1;
         this.espectadoresAtuais = 0;
+        this.espectadoresEsperando = 0;
         this.mainController = mainController;
     }
 
@@ -29,38 +31,46 @@ public class Pousada {
     }
 
     public void assistirTv(int canal, String id) throws InterruptedException {
-        controleRemoto.acquire();
         while (true) {
             mutex.acquire();
             try {
                 if (canalAtual == -1 || canalAtual == canal) {
-                    canalAtual = canal;
-                    Platform.runLater(() -> {
-                        mainController.updateImage(canalAtual);
-                    });
+                    if (canalAtual == -1) {
+                        controleRemoto.acquire();
+                        canalAtual = canal;
+                        Platform.runLater(() -> {
+                            mainController.updateImage(canalAtual);
+                        });
+                        controleRemoto.release();
+                    }
+    
                     espectadoresAtuais++;
                     System.out.println(id + " está assistindo ao canal " + canal);
-                    break;
+                    break; 
                 }
             } finally {
-                mutex.release(); 
+                mutex.release();
             }
+            espectadoresEsperando++;
             espera.acquire();
         }
-        controleRemoto.release();
     }
-
+    
     public void liberarTv(int canal, String id) throws InterruptedException {
         mutex.acquire();
         try {
             espectadoresAtuais--;
             System.out.println(id + " liberou o canal " + canal);
             if (espectadoresAtuais == 0) {
+            
+                controleRemoto.acquire();
                 canalAtual = -1;
                 Platform.runLater(() -> {
                     mainController.clearImage();
                 });
-            espera.release();
+                controleRemoto.release();
+           
+                    espera.release(espectadoresEsperando);
             }
         } finally {
             mutex.release();
